@@ -1,0 +1,9 @@
+name: muni1
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip=22.2.2
+  - python=3.9.13
+  - pip:
+      - -e ./

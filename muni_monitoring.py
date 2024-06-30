@@ -16,8 +16,8 @@ STOP_REFERENCE = {
 
 MINUTES_AWAY_ALERT = 10
 MINUTES = 2
-WIDTH = 1500
-HEIGHT = 800
+WIDTH = 2000
+HEIGHT = 1000
 FONTSIZE = 44
 FONTTYPE = 'Courier'
 FOREGROUND = 'Yellow'
@@ -59,7 +59,6 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
         my_predictions = return_relevant_metrics(
             predictions=dictionary_response['ServiceDelivery']['StopMonitoringDelivery']['MonitoredStopVisit']
         )
-        d = 2 + "3"
     except Exception as E:
         print('could not get predictions')
         print(E)

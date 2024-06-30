@@ -120,17 +120,20 @@ def start_monitoring_console(operator_id: str, bustop_id: str, token: str):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="Just an example",
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('--id')  # option that takes a value
+    parser = argparse.ArgumentParser(
+        description="Just an example",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+
+    parser.add_argument('--id', default=None)  # option that takes a value
     args = vars(parser.parse_args())
-    try:
+
+    if args['id']:
         stop_id = str(args['id'])
-    except Exception as E:
-        print('error trying to get the stop ID, defaulting to "13327"')
-        print(E)
+        print(f'stop ID is "{stop_id}"')
+    else:
         stop_id = '13327'
-    # stop_id = '13327'
+
     my_operator_id = 'SF'
 
     start_monitoring_console(

@@ -10,14 +10,14 @@ from my_secrets import token as token_key
 
 
 STOP_REFERENCE = {
-    '13327': '18th & Danvers (West)',
-    '13328': '18th & Danvers (East)'
+    '13327': '18th & Danvers (Mission)',
+    '13328': '18th & Danvers (Haight)'
 }
 
 MINUTES_AWAY_ALERT = 10
 MINUTES = 2
-WIDTH = 1500
-HEIGHT = 800
+WIDTH = 2000
+HEIGHT = 1000
 FONTSIZE = 44
 FONTTYPE = 'Courier'
 FOREGROUND = 'Yellow'
@@ -59,7 +59,6 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
         my_predictions = return_relevant_metrics(
             predictions=dictionary_response['ServiceDelivery']['StopMonitoringDelivery']['MonitoredStopVisit']
         )
-        d = 2 + "3"
     except Exception as E:
         print('could not get predictions')
         print(E)

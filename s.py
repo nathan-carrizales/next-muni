@@ -24,15 +24,20 @@ TKINTER_TITLE = 'NextMuni'
 
 
 def make_api_requests_and_update_console(tk_label_obj):
-    temperature_c = dhtDevice.temperature
-    temperature_f = temperature_c * (9 / 5) + 32
-    humidity = dhtDevice.humidity
+    try:
+        # Print the values to the serial port
+        temperature_c = dhtDevice.temperature
+        temperature_f = temperature_c * (9 / 5) + 32
+        humidity = dhtDevice.humidity
+        my_text = f'\n Temperature is {temperature_f} F.' + f'\n \n Humidity is {humidity} %.'
+
+    except RuntimeError as error:
+        # Errors happen fairly often, DHT's are hard to read, just keep going
+        my_text = error.args[0]
 
     now = (datetime.datetime.utcnow() - datetime.timedelta(hours=7)).strftime('%l:%M%p').replace(" ", "")
 
-    my_text = f'Temperature is {temperature_f} F.' + f'\n \n Humidity is {humidity} %. \n \n Time is {now}'
-
-    tk_label_obj.configure(text=my_text)
+    tk_label_obj.configure(text=f'Time: {now}' + my_text)
     tk_label_obj.after(
         1000*60*MINUTES,
         make_api_requests_and_update_console,

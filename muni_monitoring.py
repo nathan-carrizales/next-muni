@@ -10,8 +10,8 @@ from my_secrets import token as token_key
 
 
 STOP_REFERENCE = {
-    '13327': '18th & Danvers (Mission)',
-    '13328': '18th & Danvers (Haight)'
+    '13327': '18th & Danvers (Haight)',
+    '13328': '18th & Danvers (Mission)'
 }
 
 MINUTES_AWAY_ALERT = 10

@@ -1,8 +1,12 @@
+import tkinter as tk
 import datetime
+import threading
+from play_sound import play_my_sound
 import requests
 import json
 import datetime as dt
 import pandas as pd
+from my_secrets import token as token_key
 
 
 STOP_REFERENCE = {
@@ -84,7 +88,6 @@ def get_bus_times_in_text_for_bus_stop(operator, bus_stop, token_id):
 
 if __name__ == '__main__':
     from generic_tkinter import start_monitoring_console
-    from my_secrets import token as token_key
     my_operator_id = 'SF'
 
     args = {

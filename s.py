@@ -1,3 +1,5 @@
+import time
+import tkinter as tk
 import datetime
 import board
 import adafruit_dht
@@ -11,7 +13,7 @@ dhtDevice = adafruit_dht.DHT22(board.D18)
 dhtDevice = adafruit_dht.DHT22(board.D18, use_pulseio=False)
 
 
-def get_temperature_and_humidity(foobar):
+def make_api_requests_and_update_console(foobar):
     try:
         # Print the values to the serial port
         temperature_c = dhtDevice.temperature
@@ -38,6 +40,6 @@ if __name__ == '__main__':
     }
 
     start_monitoring_console(
-        function_for_getting_text=get_temperature_and_humidity,
+        function_for_getting_text=make_api_requests_and_update_console,
         function_arguments=args
     )

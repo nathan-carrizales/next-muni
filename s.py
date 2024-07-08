@@ -24,6 +24,10 @@ def get_temperature_and_humidity(foobar):
         # Errors happen fairly often, DHT's are hard to read, just keep going
         my_text = '\n Error:' + str(error.args[0])
 
+    now = (datetime.datetime.utcnow() - datetime.timedelta(hours=7)).strftime('%l:%M%p').replace(" ", "")
+
+    my_text = f'Time: {now}' + my_text
+
     return my_text
 
 

@@ -14,6 +14,16 @@ STOP_REFERENCE = {
     '13328': '18th & Danvers (Mission)'
 }
 
+MINUTES_AWAY_ALERT = 10
+MINUTES = 2
+WIDTH = 2000
+HEIGHT = 1000
+FONTSIZE = 44
+FONTTYPE = 'Courier'
+FOREGROUND = 'Yellow'
+BACKGROUND = 'Black'
+TKINTER_TITLE = 'NextMuni'
+
 
 def monitor_muni(stop_id, api_token: str, operator_id: str):
 
@@ -57,16 +67,7 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
     return my_predictions
 
 
-def get_bus_times_for_mission_and_haight(operator, token_id):
-
-    mission_text = get_bus_times_in_text_for_bus_stop(operator, '13327', token_id)
-    haight_text = get_bus_times_in_text_for_bus_stop(operator, '13328', token_id)
-
-    return mission_text + '\n \n' + haight_text
-
-
-def get_bus_times_in_text_for_bus_stop(operator, bus_stop, token_id):
-
+def make_api_requests_and_update_console(tk_label_obj, bus_stop: str, operator: str, token_id):
     stop_identifier = STOP_REFERENCE[bus_stop]
     pred_dict = monitor_muni(
         stop_id=bus_stop,
@@ -83,21 +84,59 @@ def get_bus_times_in_text_for_bus_stop(operator, bus_stop, token_id):
     else:
         my_text = f'Time now: {now}. Stop ID: {stop_identifier}. \n \n No times available...'
 
-    return my_text
+    tk_label_obj.configure(text=my_text)
+    tk_label_obj.after(
+        1000*60*MINUTES,
+        make_api_requests_and_update_console,
+        tk_label_obj,
+        bus_stop,
+        operator,
+        token_id
+    )
+
+    if pred_dict:
+        if pred_dict[0]['MinutesRemaining'] <= MINUTES_AWAY_ALERT:
+            x = threading.Thread(target=play_my_sound)
+            x.start()
+
+    return None
+
+
+def start_monitoring_console(operator_id: str, bustop_id: str, token: str):
+
+    root = tk.Tk()
+    root.title(TKINTER_TITLE)
+    root.geometry(f"{WIDTH}x{HEIGHT}")
+
+    clock = tk.Label(root, width=WIDTH, height=HEIGHT, bg=BACKGROUND, fg=FOREGROUND, font=(FONTTYPE, FONTSIZE))
+    clock.pack()
+
+    make_api_requests_and_update_console(tk_label_obj=clock, operator=operator_id, bus_stop=bustop_id, token_id=token)
+
+    root.mainloop()
 
 
 if __name__ == '__main__':
-    from generic_tkinter import start_monitoring_console
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Just an example",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+
+    parser.add_argument('--id', default=None)  # option that takes a value
+    args = vars(parser.parse_args())
+
+    if args['id']:
+        stop_id = str(args['id'])
+        print(f'stop ID is "{stop_id}"')
+    else:
+        stop_id = '13327'
+
     my_operator_id = 'SF'
 
-    args = {
-        'operator': my_operator_id,
-        'token_id': token_key
-    }
-
-    # text = get_bus_times_for_mission_and_haight(**args)
-
     start_monitoring_console(
-        function_for_getting_text=get_bus_times_for_mission_and_haight,
-        function_arguments=args
+        operator_id=my_operator_id,
+        bustop_id=stop_id,
+        token=token_key
     )

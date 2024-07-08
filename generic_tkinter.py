@@ -64,8 +64,8 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
 
 
 def update_console(tk_label_obj, my_function, my_arguments):
-
-    my_text = my_function(**my_arguments)
+    now = (dt.datetime.utcnow() - dt.timedelta(hours=7)).strftime('%l:%M%p').replace(" ", "")
+    my_text = now + ' ' + my_function(**my_arguments)
 
     for var, val in my_arguments.items():
         c = f"{var}='{val}'"

@@ -69,15 +69,14 @@ def get_bus_times_in_text_for_bus_stop(operator, bus_stop, token_id):
         operator_id=operator,
         api_token=token_id
     )
-    now = (datetime.datetime.utcnow() - datetime.timedelta(hours=7)).strftime('%l:%M%p').replace(" ", "")
 
     if pred_dict:
         list_of_predictions = [
             f'\n {p["MinutesRemaining"]}-Minutes ({p["ArrivalTime (pretty)"]})' for _, p in pred_dict.items()
         ]
-        my_text = f'Time now: {now}. Stop ID: {stop_identifier}. \n {" ".join(list_of_predictions)}'
+        my_text = f'Stop ID: {stop_identifier}. \n {" ".join(list_of_predictions)}'
     else:
-        my_text = f'Time now: {now}. Stop ID: {stop_identifier}. \n \n No times available...'
+        my_text = f'Stop ID: {stop_identifier}. \n \n No times available...'
 
     return my_text
 

@@ -1,12 +1,8 @@
 import tkinter as tk
-import datetime
-import threading
-from play_sound import play_my_sound
 import requests
 import json
 import datetime as dt
 import pandas as pd
-from my_secrets import token as token_key
 
 
 STOP_REFERENCE = {

@@ -6,7 +6,7 @@ def get_temp_and_muni(operator, token_id, foobar):
 
     text_temperature = get_temperature_and_humidity(foobar)
     text_from_muni = get_bus_times_for_mission_and_haight(operator, token_id)
-    return text_temperature + '\n \n' + text_from_muni
+    return text_temperature + '\n ' + text_from_muni
 
 
 if __name__ == '__main__':

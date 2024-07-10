@@ -54,9 +54,15 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
 
 
 def get_bus_times_for_mission_and_haight(operator, token_id):
+    try:
+        mission_text = get_bus_times_in_text_for_bus_stop(operator, '13327', token_id)
+    except Exception as E:
+        mission_text = 'Could not get muni times for Mission.'
 
-    mission_text = get_bus_times_in_text_for_bus_stop(operator, '13327', token_id)
-    haight_text = get_bus_times_in_text_for_bus_stop(operator, '13328', token_id)
+    try:
+        haight_text = get_bus_times_in_text_for_bus_stop(operator, '13328', token_id)
+    except Exception as E:
+        haight_text = 'Could not get muni times for Haight.'
 
     return mission_text + '\n \n' + haight_text
 

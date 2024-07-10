@@ -1,4 +1,4 @@
-import datetime
+import tkinter as tk
 import requests
 import json
 import datetime as dt
@@ -9,6 +9,16 @@ STOP_REFERENCE = {
     '13327': '18th & Danvers (Haight)',
     '13328': '18th & Danvers (Mission)'
 }
+
+MINUTES_AWAY_ALERT = 10
+MINUTES = 2
+WIDTH = 2000
+HEIGHT = 1000
+FONTSIZE = 44
+FONTTYPE = 'Courier'
+FOREGROUND = 'Yellow'
+BACKGROUND = 'Black'
+TKINTER_TITLE = 'NextMuni'
 
 
 def monitor_muni(stop_id, api_token: str, operator_id: str):
@@ -53,47 +63,48 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
     return my_predictions
 
 
-def get_bus_times_for_mission_and_haight(operator, token_id):
+def update_console(tk_label_obj, my_function, my_arguments):
+    now = (dt.datetime.utcnow() - dt.timedelta(hours=7)).strftime('%l:%M%p').replace(" ", "")
+    my_text = now + '\n ' + my_function(**my_arguments)
 
-    mission_text = get_bus_times_in_text_for_bus_stop(operator, '13327', token_id)
-    haight_text = get_bus_times_in_text_for_bus_stop(operator, '13328', token_id)
+    for var, val in my_arguments.items():
+        c = f"{var}='{val}'"
+        exec(c)
 
-    return mission_text + '\n \n' + haight_text
+    my_variables = [i for i in my_arguments.keys()]
+
+    tk_label_obj.configure(text=my_text)
+
+    variables = ', '.join(my_variables)
+
+    command = f"tk_label_obj.after(1000*60*{MINUTES}, update_console, tk_label_obj, my_function, {variables})"
+
+    exec(command)
+
+    return None
 
 
-def get_bus_times_in_text_for_bus_stop(operator, bus_stop, token_id):
+def start_monitoring_console(function_for_getting_text, function_arguments):
 
-    stop_identifier = STOP_REFERENCE[bus_stop]
-    pred_dict = monitor_muni(
-        stop_id=bus_stop,
-        operator_id=operator,
-        api_token=token_id
-    )
+    root = tk.Tk()
+    root.title(TKINTER_TITLE)
+    root.geometry(f"{WIDTH}x{HEIGHT}")
 
-    if pred_dict:
-        list_of_predictions = [
-            f'\n {p["MinutesRemaining"]}-Minutes ({p["ArrivalTime (pretty)"]})' for _, p in pred_dict.items()
-        ]
-        my_text = f'Stop ID: {stop_identifier}. \n {" ".join(list_of_predictions)}'
-    else:
-        my_text = f'Stop ID: {stop_identifier}. \n \n No times available...'
+    clock = tk.Label(root, width=WIDTH, height=HEIGHT, bg=BACKGROUND, fg=FOREGROUND, font=(FONTTYPE, FONTSIZE))
+    clock.pack()
 
-    return my_text
+    update_console(tk_label_obj=clock, my_function=function_for_getting_text, my_arguments=function_arguments)
+
+    root.mainloop()
 
 
 if __name__ == '__main__':
-    from generic_tkinter import start_monitoring_console
-    from my_secrets import token as token_key
-    my_operator_id = 'SF'
 
-    args = {
-        'operator': my_operator_id,
-        'token_id': token_key
-    }
-
-    # text = get_bus_times_for_mission_and_haight(**args)
+    # from library import function_that_gets_text
+    def bus_times(variable1, variable2, variable3):
+        return f'your variables are {variable1}, {variable2}, {variable3}'
 
     start_monitoring_console(
-        function_for_getting_text=get_bus_times_for_mission_and_haight,
-        function_arguments=args
+        function_for_getting_text=bus_times,
+        function_arguments={'variable1': 1, 'variable2': 2, 'variable3': 3}
     )

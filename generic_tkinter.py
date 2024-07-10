@@ -65,21 +65,18 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
 
 def update_console(tk_label_obj, my_function, my_arguments):
     now = (dt.datetime.utcnow() - dt.timedelta(hours=7)).strftime('%l:%M%p').replace(" ", "")
-    my_text = now + '\n ' + my_function(**my_arguments)
 
-    for var, val in my_arguments.items():
-        c = f"{var}='{val}'"
-        exec(c)
-
-    my_variables = [i for i in my_arguments.keys()]
+    my_text = now + '\n \n' + my_function(**my_arguments)
 
     tk_label_obj.configure(text=my_text)
 
-    variables = ', '.join(my_variables)
-
-    command = f"tk_label_obj.after(1000*60*{MINUTES}, update_console, tk_label_obj, my_function, {variables})"
-
-    exec(command)
+    tk_label_obj.after(
+        1000*60*MINUTES,
+        update_console,
+        tk_label_obj,
+        my_function,
+        my_arguments
+    )
 
     return None
 

@@ -91,8 +91,6 @@ if __name__ == '__main__':
         'token_id': token_key
     }
 
-    # text = get_bus_times_for_mission_and_haight(**args)
-
     start_monitoring_console(
         function_for_getting_text=get_bus_times_for_mission_and_haight,
         function_arguments=args

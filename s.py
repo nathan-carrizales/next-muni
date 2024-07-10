@@ -16,9 +16,9 @@ def get_temperature_and_humidity(foobar):
     try:
         # Print the values to the serial port
         temperature_c = dhtDevice.temperature
-        temperature_f = np.round(temperature_c * (9 / 5) + 32, 2)
+        temperature_f = int(temperature_c * (9 / 5) + 32, 2)
         humidity = dhtDevice.humidity
-        my_text = f'\n Temperature is {temperature_f} F.' + f'. Humidity is {humidity} %.'
+        my_text = f'\n Temperature is {temperature_f} F. ' + f'Humidity is {humidity} %.'
 
     except RuntimeError as error:
         # Errors happen fairly often, DHT's are hard to read, just keep going

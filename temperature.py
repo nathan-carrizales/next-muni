@@ -15,7 +15,7 @@ def get_temp_and_humidity_from_sensor(adafruit_sensor, label):
 
     try:
         temperature_c = adafruit_sensor.temperature
-        temperature_f = int(temperature_c * (9 / 5) + 32, 2)
+        temperature_f = int(temperature_c * (9 / 5) + 32)
         temp_sign = '°'
     except Exception:
         temperature_f = '-'

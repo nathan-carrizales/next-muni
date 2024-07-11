@@ -1,24 +1,39 @@
-from s import get_temperature_and_humidity
+from temperature import get_multi_temp_and_humidity_from_sensor
 from muni_monitoring import get_bus_times_for_mission_and_haight
 
 
-def get_temp_and_muni(operator, token_id, foobar):
+def get_temp_and_muni(operator, token_id, outdoor_sensor, indoor_sensor, outdoor_label, indoor_label):
 
-    text_temperature = get_temperature_and_humidity(foobar)
-    text_from_muni = get_bus_times_for_mission_and_haight(operator, token_id)
-    return text_temperature + '\n \n' + text_from_muni
+    text_weather = get_multi_temp_and_humidity_from_sensor(
+        outdoor_sensor,
+        indoor_sensor,
+        outdoor_label,
+        indoor_label
+    )
+
+    text_from_muni = get_bus_times_for_mission_and_haight(
+        operator,
+        token_id
+    )
+
+    return text_weather + '\n \n' + text_from_muni
 
 
 if __name__ == '__main__':
     from my_secrets import token as token_key
+    import board
     from generic_tkinter import start_monitoring_console
+    import adafruit_dht
 
     my_operator_id = 'SF'
 
     args = {
         'operator': my_operator_id,
         'token_id': token_key,
-        'foobar': 'baz'
+        'outdoor_sensor': adafruit_dht.DHT11(board.D18),
+        'indoor_sensor': adafruit_dht.DHT11(board.D4),
+        'outdoor_label': 'Outdoor',
+        'indoor_label': 'Indoor'
     }
 
     start_monitoring_console(

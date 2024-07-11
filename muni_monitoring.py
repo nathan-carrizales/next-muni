@@ -80,9 +80,9 @@ def get_bus_times_in_text_for_bus_stop(operator, bus_stop, token_id):
         list_of_predictions = [
             f'\n {p["MinutesRemaining"]}-Minutes ({p["ArrivalTime (pretty)"]})' for _, p in pred_dict.items()
         ]
-        my_text = f'Stop ID: {stop_identifier}. \n {" ".join(list_of_predictions)}'
+        my_text = f'Stop: {stop_identifier}. \n {" ".join(list_of_predictions)}'
     else:
-        my_text = f'Stop ID: {stop_identifier}. \n \n No times available...'
+        my_text = f'Stop: {stop_identifier}. \n \n No times available...'
 
     return my_text
 

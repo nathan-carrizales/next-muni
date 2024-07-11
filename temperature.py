@@ -8,7 +8,7 @@ def get_multi_temp_and_humidity_from_sensor(outdoor_sensor, indoor_sensor, outdo
 
     _, _, indoor_data_text = get_temp_and_humidity_from_sensor(indoor_sensor, indoor_label)
 
-    return outdoor_data_text + '\t' + indoor_data_text + ' (Temp, Humid)'
+    return outdoor_data_text + ' ' + indoor_data_text + ' (Temp, Humid)'
 
 
 def get_temp_and_humidity_from_sensor(adafruit_sensor, label):

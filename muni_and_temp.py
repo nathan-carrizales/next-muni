@@ -30,8 +30,8 @@ if __name__ == '__main__':
     args = {
         'operator': my_operator_id,
         'token_id': token_key,
-        'outdoor_sensor': adafruit_dht.DHT11(board.D18),
-        'indoor_sensor': adafruit_dht.DHT11(board.D4),
+        'outdoor_sensor': adafruit_dht.DHT11(board.D18, use_pulseio=False),
+        'indoor_sensor': adafruit_dht.DHT11(board.D4, use_pulseio=False),
         'outdoor_label': 'Outdoor',
         'indoor_label': 'Indoor'
     }

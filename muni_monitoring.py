@@ -38,7 +38,8 @@ def monitor_muni(stop_id, api_token: str, operator_id: str):
         return dict_predictions
 
     url = f'http://api.511.org/transit/StopMonitoring?api_key={api_token}&agency={operator_id}&stopCode={stop_id}'
-    response = requests.get(url)
+    print(url)
+    response = requests.get('http://api.511.org/transit/StopMonitoring?api_key=ba0c9fb0-37a1-494e-a988-6b642be75974&agency=SF&stopCode=13327')
     dictionary_response = json.loads(response.content)
 
     try:
